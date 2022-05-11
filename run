@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -eu
+cd $(dirname $0)
+if [ "${1:-}" = "dev" ]; then
+  opts='--dev'
+  port=1453
+fi
+./bin/sanic --host="0.0.0.0" --port="$port" "${opts:-}" app:app
