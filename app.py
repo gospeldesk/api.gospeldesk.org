@@ -8,7 +8,7 @@ import urllib3
 
 from sanic import Sanic
 from sanic.log import logger
-from sanic.response import json
+from sanic.response import json, text
 
 
 http = urllib3.PoolManager()
@@ -17,7 +17,7 @@ re_ref_body = re.compile(r'<h3>([^<(]+?) \(Gospel\)</h3>([^<]+?)<p />')
 
 @lru_cache(maxsize=3)
 def fetch(y, m, d):
-    url = f"https://www.grandtier.com/nycathedral/jgetreadings.php?y=${y}&m=${m}&d=${d}"
+    url = f"https://www.grandtier.com/nycathedral/jgetreadings.php?y={y}&m={m}&d={d}"
     raw = http.request('GET', url).data.decode('utf8')[21:-3]
     heading = ref = body = ''
 
@@ -37,7 +37,7 @@ app = Sanic("api-gospeldesk-org")
 
 @app.route('/')
 def root(request):
-    return text('Greetings, program!')
+    return text('Glory to Jesus Christ!')
 
 @app.route('/v1/<y:int>/<m:int>/<d:int>')
 def day(request, y, m, d):
