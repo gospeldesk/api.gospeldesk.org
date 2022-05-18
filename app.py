@@ -28,8 +28,8 @@ re_ref_body = re.compile(r'<h3>([^<(]+?) \(Gospel\)</h3>([^<]+?)<p />')
 async def fetch(y, m, d):
 
     # validation - do this in here vs. above so that failure result is cached
-    if (len(y), len(m), len(d)) != (4,2,2):
-        raise ValueError
+    #if (len(y), len(m), len(d)) != (4,2,2): - TODO - app sends 2022/5/17
+    #    raise ValueError
     datetime.datetime.strptime(f'{y}-{m}-{d}', '%Y-%m-%d') # raises ValueError
 
     url = f"https://www.grandtier.com/nycathedral/jgetreadings.php?y={y}&m={m}&d={d}"
