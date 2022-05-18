@@ -3,4 +3,4 @@ default:
 	./bin/pip install --upgrade -r requirements.txt
 
 clean:
-	rm -rf bin lib pyvenv.cfg
+	rm -rf bin lib include pyvenv.cfg
