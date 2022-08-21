@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import asyncio
 import datetime
-import os
 import re
 
 from collections import deque as Deque
@@ -11,7 +10,6 @@ from async_lru import alru_cache
 
 from sanic import Sanic
 from sanic.exceptions import InvalidUsage
-from sanic.log import logger
 from sanic.response import json, text
 
 
