@@ -16,11 +16,16 @@ from sanic.response import json, text
 app = Sanic("api-gospeldesk-org")
 
 
+class BadHeadings(RuntimeError):
+    pass
+
+
 # Heavy lifting
 # =============
 
-re_heading = re.compile(r'<h2>([^<]+?)</h2>')
+re_headings = re.compile(r'<h2>([^<]+?)</h2>')
 re_ref_body = re.compile(r'<h3>([^<(]+?) \(Gospel\)</h3>([^<]+?)<p />')
+re_special = re.compile(r'<h3>([^<(]+?) \(Gospel—([^)&]+)\)</h3>([^<]+?)<p />')
 
 @alru_cache(maxsize=3)
 async def fetch(y, m, d):
@@ -36,18 +41,34 @@ async def fetch(y, m, d):
             html = await response.text()
 
     raw = html[21:-3]
+    raw = raw.replace('&mdash;', '—').replace('&ndash;', '–')
     heading = ref = body = ''
 
-    m = re_heading.search(raw)
-    if m:
-        heading = m.group(1).split(';')[0]
+    m = re_headings.search(raw)
+    if not m:
+        raise BadHeadings
+    headings = m.group(1).split(';')
 
     m = re_ref_body.search(raw)
     if m:
+        heading = headings[0]
         ref = m.group(1).replace('.', ':')
         body = m.group(2)
+    else:
+        # A feast day such as Christmas.
+        m = re_special.search(raw)
+        if m:
+            try:
+                heading = headings[1]
+            except IndexError:
+                heading = m.group(2)
+            ref = m.group(1).replace('.', ':')
+            body = m.group(3)
 
-    return {'heading': heading, 'ref': ref, 'body': body or 'There is no Gospel reading today(!).'}
+    return { 'heading': heading.strip()
+           , 'ref': ref
+           , 'body': body or 'Could not find a Gospel reading for today(!).'
+            }
 
 
 # Analytics
