@@ -2,6 +2,7 @@
 import asyncio
 import datetime
 import re
+import sentry_sdk
 
 from collections import deque as Deque
 
@@ -11,6 +12,13 @@ from async_lru import alru_cache
 from sanic import Sanic
 from sanic.exceptions import InvalidUsage
 from sanic.response import json, text
+
+
+sentry_sdk.init(
+    dsn="https://9b2d4d4faecb8a73987e7e01c9b3f2de@o4506623256100864.ingest.sentry.io/4506623288737792",
+    traces_sample_rate=1.0,
+    profiles_sample_rate=1.0,
+)
 
 
 app = Sanic("api-gospeldesk-org")
