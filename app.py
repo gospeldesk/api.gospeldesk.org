@@ -104,7 +104,7 @@ def root(request):
     return text("Glory to Jesus Christ!")
 
 
-@app.route("/v1/stats")
+@app.route("/v1/")
 def stats(request):
     return json(
         {
