@@ -13,11 +13,13 @@ from sanic.exceptions import InvalidUsage
 from sanic.response import json, text
 
 
-sentry_sdk.init(
-    dsn="https://9b2d4d4faecb8a73987e7e01c9b3f2de@o4506623256100864.ingest.sentry.io/4506623288737792",
-    traces_sample_rate=1.0,
-    profiles_sample_rate=1.0,
-)
+SENTRY_DSN = os.environ.get('SENTRY_DSN', '')
+if SENTRY_DSN:
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        traces_sample_rate=1.0,
+        profiles_sample_rate=1.0,
+    )
 
 
 app = Sanic("api-gospeldesk-org")
