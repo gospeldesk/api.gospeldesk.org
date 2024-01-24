@@ -2,6 +2,7 @@
 import asyncio
 import datetime
 import sentry_sdk
+import os
 
 from collections import deque as Deque
 
@@ -55,7 +56,6 @@ async def fetch(y, m, d):
         body = ""
         ref = gospel["display"].replace(".", ":")
 
-        n = len(gospel["passage"])
         for i, verse in enumerate(gospel["passage"]):
             if i > 0:
                 body += "\n\n" if verse["paragraph_start"] else " "
