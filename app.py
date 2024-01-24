@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import asyncio
 import datetime
-import re
 import sentry_sdk
 
 from collections import deque as Deque
@@ -31,53 +30,36 @@ class BadHeadings(RuntimeError):
 # Heavy lifting
 # =============
 
-re_headings = re.compile(r"<h2>([^<]+?)</h2>")
-re_ref_body = re.compile(r"<h3>([^<(]+?) \(Gospel\)</h3>([^<]+?)<p />")
-re_special = re.compile(r"<h3>([^<(]+?) \(Gospel—([^)&]+)\)</h3>([^<]+?)<p />")
-
 
 @alru_cache(maxsize=3)
 async def fetch(y, m, d):
     # validation - do this in here vs. above so that failure result is cached
-    # if (len(y), len(m), len(d)) != (4,2,2): - TODO - app sends 2022/5/17
-    #    raise ValueError
-    datetime.datetime.strptime(f"{y}-{m}-{d}", "%Y-%m-%d")  # raises ValueError
+    datetime.datetime.strptime(f"{y}-{m}-{d}", "%Y-%m-%d")  # will raise ValueError
 
-    url = f"https://www.grandtier.com/nycathedral/jgetreadings.php?y={y}&m={m}&d={d}"
+    url = f"https://orthocal.info/api/gregorian/{y}/{m}/{d}/"
+    print(url)
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as response:
-            html = await response.text()
+            day = await response.json()
 
-    raw = html[21:-3]
-    raw = raw.replace("&mdash;", "—").replace("&ndash;", "–")
-    heading = ref = body = ""
-
-    m = re_headings.search(raw)
-    if not m:
-        raise BadHeadings
-    headings = m.group(1).split(";")
-
-    m = re_ref_body.search(raw)
-    if m:
-        heading = headings[0]
-        ref = m.group(1).replace(".", ":")
-        body = m.group(2)
+    try:
+        gospel = [r for r in day["readings"] if r["source"] == "Gospel"][0]
+    except IndexError:
+        heading = ""
+        body = "There is no Gospel reading for today."
+        ref = ""
     else:
-        # A feast day such as Christmas.
-        m = re_special.search(raw)
-        if m:
-            try:
-                heading = headings[1]
-            except IndexError:
-                heading = m.group(2)
-            ref = m.group(1).replace(".", ":")
-            body = m.group(3)
+        heading = day["titles"][0]
+        body = ""
+        ref = gospel["display"].replace(".", ":")
 
-    return {
-        "heading": heading.strip(),
-        "ref": ref,
-        "body": body or "Could not find a Gospel reading for today(!).",
-    }
+        n = len(gospel["passage"])
+        for i, verse in enumerate(gospel["passage"]):
+            if i > 0:
+                body += "\n\n" if verse["paragraph_start"] else " "
+            body += verse["content"]
+
+    return {"heading": heading, "ref": ref, "body": body}
 
 
 # Analytics
