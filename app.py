@@ -69,7 +69,7 @@ async def fetch(y, m, d):
         body = "There is no Gospel reading for today."
         ref = ""
     else:
-        heading = OVERRIDES.get(day["pascha_distance"], day["titles"][0])
+        heading = OVERRIDES.get(day["pascha_distance"]) or day["titles"][0]
         body = ""
         ref = gospel["display"].replace(".", ":")
 
