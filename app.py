@@ -37,17 +37,17 @@ class BadHeadings(RuntimeError):
 OVERRIDES = {
     -76: 'Monday after Zacchaeus Sunday',
     -75: 'Tuesday after Zacchaeus Sunday',
-    -74: 'Wedneseday after Zacchaeus Sunday',
+    -74: 'Wednesday after Zacchaeus Sunday',
     -73: 'Thursday after Zacchaeus Sunday',
     -72: 'Friday after Zacchaeus Sunday',
     -71: 'Saturday after Zacchaeus Sunday',
 
-    -69: 'Monday before Great Lent',
-    -68: 'Tuesday before Great Lent',
-    -67: 'Wedneseday before Great Lent',
-    -66: 'Thursday before Great Lent',
-    -65: 'Friday before Great Lent',
-    -64: 'Saturday before Great Lent',
+    -69: 'First Monday of Great Lent',
+    -68: 'First Tuesday of Great Lent',
+    -67: 'First Wednesday of Great Lent',
+    -66: 'First Thursday of Great Lent',
+    -65: 'First Friday of Great Lent',
+    -64: 'First Saturday of Great Lent',
 }
 
 
