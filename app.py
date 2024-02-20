@@ -42,12 +42,12 @@ OVERRIDES = {
     -72: 'Friday after Zacchaeus Sunday',
     -71: 'Saturday after Zacchaeus Sunday',
 
-    -69: 'First Monday of Great Lent',
-    -68: 'First Tuesday of Great Lent',
-    -67: 'First Wednesday of Great Lent',
-    -66: 'First Thursday of Great Lent',
-    -65: 'First Friday of Great Lent',
-    -64: 'First Saturday of Great Lent',
+    -69: 'Clean Monday',
+    -68: 'Tuesday of Clean Week',
+    -67: 'Wednesday of Clean Week',
+    -66: 'Thursday of Clean Week',
+    -65: 'Friday of Clean Week',
+    -64: 'Saturday of Clean Week',
 }
 
 
@@ -69,7 +69,7 @@ async def fetch(y, m, d):
         body = "There is no Gospel reading for today."
         ref = ""
     else:
-        heading = OVERRIDES.get(day["pdist"], day["titles"][0])
+        heading = OVERRIDES.get(day["pascha_distance"], day["titles"][0])
         body = ""
         ref = gospel["display"].replace(".", ":")
 
