@@ -42,12 +42,12 @@ OVERRIDES = {
     -72: 'Friday after Zacchaeus Sunday',
     -71: 'Saturday after Zacchaeus Sunday',
 
-    -69: 'Clean Monday',
-    -68: 'Tuesday of Clean Week',
-    -67: 'Wednesday of Clean Week',
-    -66: 'Thursday of Clean Week',
-    -65: 'Friday of Clean Week',
-    -64: 'Saturday of Clean Week',
+    -69: 'Monday after Publican and Pharisee',
+    -68: 'Tuesday after Publican and Pharisee',
+    -67: 'Wednesday after Publican and Pharisee',
+    -66: 'Thursday after Publican and Pharisee',
+    -65: 'Friday after Publican and Pharisee',
+    -64: 'Saturday after Publican and Pharisee',
 }
 
 
